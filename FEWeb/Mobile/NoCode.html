@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="description" content="">
+    <meta name="Keywords" content="">
+    <title>扫码结果</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script src="js/MobileCommon.js"></script>
+</head>
+<body>
+    <header class="header">
+        <a href="Index.html" class="back" >
+            <i class="iconfont">&#xe647;</i>
+        </a>
+        <span class="title">扫码结果</span>
+    </header>
+    <div class="content" style="bottom:0;">
+        <div class="nocode">
+            <img src="images/nocode.jpg" alt="Alternate Text" />
+            <p id="p_Word"></p>
+        </div>
+        <!--<div style="padding:20px 10px;">
+            <input type="submit" id="backIndex" class="button" value="返回首页" />
+        </div>-->        
+    </div>
+    <script>
+        mui.init({
+            swipeBack: true,//启用右滑关闭功能
+            keyEventBind: {
+                backbutton: true  //启动back按键监听
+            },
+            statusBarBackground: '#6a264b',
+        });
+        var UrlDate = new GetUrlDate();
+        var type = UrlDate.te;// 2评价还未开始;3二维码已失效;4没有该评价;5您不在调查范围内！
+        $(function () {
+            var $p_Word = $("#p_Word");
+            if (type == 2) {
+                $p_Word.html("评价还未开始");
+            } else if (type == 3) {
+                $p_Word.html("该二维码已失效");
+            } else if (type == 4) {
+                $p_Word.html("该调查不存在！");
+            } else if (type == 5) {
+                $p_Word.html("您不在调查范围内！");
+            }            
+            //$('#backIndex').on('tap', function () {
+            //    window.location.href = 'Index.html';
+            //});
+        });
+    </script>
+</body>
+</html>

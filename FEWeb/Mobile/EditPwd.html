@@ -1,0 +1,107 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="description" content="">
+    <meta name="Keywords" content="">
+    <title>我的</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script src="js/linq.min.js"></script>
+    <script src="js/MobileCommon.js"></script>
+    <script src="js/ejs.min.js"></script>
+    <script src="js/upload.js"></script>
+</head>
+<body>
+    <header class="header">
+        <a href="My.html" class="back">
+            <i class="iconfont">&#xe647;</i>
+        </a>
+        <span class="title">修改密码</span>
+    </header>
+    <div class="content">
+        <div class="input_row mt10" style="padding: 5px 14px; border-top: 1px solid #E5E7E6;">
+            <label>
+                原始密码
+            </label>
+            <input type="password" id="pwd_Old" value="" placeholder="请输入原始密码"/>
+        </div>
+        <div class="input_row mt10" style="padding: 5px 14px; border-top: 1px solid #E5E7E6;">
+            <label>
+                新密码
+            </label>
+            <input type="password" id="pwd_New" value="" placeholder="请输入新密码" />
+        </div>
+        <div class="input_row mt10" style="padding: 5px 14px; border-top: 1px solid #E5E7E6;">
+            <label>
+                确认密码
+            </label>
+            <input type="password" id="pwd_ReNew" value="" placeholder="请输入确认密码" />
+        </div>
+        <div style="padding:10px 14px">
+            <input type="submit" id="btn_submit" class="button" value="确认" />
+        </div>
+        
+    </div>
+    <script>
+        mui.init({
+            swipeBack: true,//启用右滑关闭功能
+            keyEventBind: {
+                backbutton: true  //启动back按键监听
+            },
+            statusBarBackground: '#6a264b',
+        });
+        $(function () {
+            $('#btn_submit').on('tap', function () {
+                SetPassWord();
+            });
+        });
+        function SetPassWord() {
+            var OldPassWord = $("#pwd_Old").val().trim();
+            var NewPassWord = $("#pwd_New").val().trim();
+            var ReNewPassWord = $("#pwd_ReNew").val().trim();
+            if (!OldPassWord.length || OldPassWord == "请输入原始密码") { MesTips("请输入原始密码"); return; }
+            if (!NewPassWord.length || NewPassWord == "请输入新密码") { MesTips("请输入新密码"); return; }
+            if (!ReNewPassWord.length || ReNewPassWord == "请输入确认密码") { MesTips("请输入确认密码"); return; }
+            if (NewPassWord != ReNewPassWord) {
+                MesTips("两次输入的密码不一致!");
+                return;
+            }
+            var postData = { func: "SetPassWord", Userid: login_User.UniqueNo, OldPassWord: OldPassWord, NewPassWord: NewPassWord };
+            $.ajax({
+                type: "Post",
+                url: HanderServiceUrl + "/SetMenu/SetPassWordHandler.ashx",
+                data: postData,
+                dataType: "json",
+                async: false,
+                success: function (returnVal) {
+                    if (returnVal.result.errMsg == "success") {
+                        MesTips("密码修改成功");
+                        window.location.href = "My.html";
+                    }
+                    else if (returnVal.result.errMsg == "ClearPasswordError") {
+                        MesTips("原密码输入错误");
+                    }
+                    else {
+                        MesTips("密码修改失败");
+                    }
+                },
+                error: function (errMsg) {
+                    MesTips("密码修改失败");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

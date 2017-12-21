@@ -1,0 +1,117 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEHandler", "FEHandler\FEHandler.csproj", "{1B407016-C210-454E-B007-B41F8623BB3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEWeb", "FEWeb\FEWeb.csproj", "{E9B6BBBF-E9B0-4108-A359-2A66EF4F0C79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEUtility", "FEUtility\FEUtility.csproj", "{4AAA209D-899A-4637-B90B-DAFB00AFD0E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEBLL", "FEBLL\FEBLL.csproj", "{B4B5E8C9-9065-4988-A41F-A59B49B1181E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEDAL", "FEDAL\FEDAL.csproj", "{E0A6D2DC-A46F-448D-ADEF-03E78EB1BB8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEIBLL", "FEIBLL\FEIBLL.csproj", "{7192D2C2-E267-48E4-9757-592BE0237D73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEIDAL", "FEIDAL\FEIDAL.csproj", "{4C2E88EC-04EF-49C3-8CE4-283C7A10B11B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEModel", "FEModel\FEModel.csproj", "{FFB01332-5A50-4CCE-8370-638E4676F2C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FE_Test", "FE_Test\FE_Test.csproj", "{244F9505-9965-4DAB-BAE6-F4C1627C0E91}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{F8A87474-4161-474A-A402-CF488A95F452}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B407016-C210-454E-B007-B41F8623BB3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B407016-C210-454E-B007-B41F8623BB3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B407016-C210-454E-B007-B41F8623BB3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B407016-C210-454E-B007-B41F8623BB3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9B6BBBF-E9B0-4108-A359-2A66EF4F0C79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9B6BBBF-E9B0-4108-A359-2A66EF4F0C79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9B6BBBF-E9B0-4108-A359-2A66EF4F0C79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9B6BBBF-E9B0-4108-A359-2A66EF4F0C79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AAA209D-899A-4637-B90B-DAFB00AFD0E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AAA209D-899A-4637-B90B-DAFB00AFD0E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AAA209D-899A-4637-B90B-DAFB00AFD0E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AAA209D-899A-4637-B90B-DAFB00AFD0E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4B5E8C9-9065-4988-A41F-A59B49B1181E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4B5E8C9-9065-4988-A41F-A59B49B1181E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4B5E8C9-9065-4988-A41F-A59B49B1181E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4B5E8C9-9065-4988-A41F-A59B49B1181E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0A6D2DC-A46F-448D-ADEF-03E78EB1BB8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0A6D2DC-A46F-448D-ADEF-03E78EB1BB8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0A6D2DC-A46F-448D-ADEF-03E78EB1BB8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0A6D2DC-A46F-448D-ADEF-03E78EB1BB8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7192D2C2-E267-48E4-9757-592BE0237D73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7192D2C2-E267-48E4-9757-592BE0237D73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7192D2C2-E267-48E4-9757-592BE0237D73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7192D2C2-E267-48E4-9757-592BE0237D73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C2E88EC-04EF-49C3-8CE4-283C7A10B11B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C2E88EC-04EF-49C3-8CE4-283C7A10B11B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C2E88EC-04EF-49C3-8CE4-283C7A10B11B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C2E88EC-04EF-49C3-8CE4-283C7A10B11B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFB01332-5A50-4CCE-8370-638E4676F2C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFB01332-5A50-4CCE-8370-638E4676F2C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFB01332-5A50-4CCE-8370-638E4676F2C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB01332-5A50-4CCE-8370-638E4676F2C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{244F9505-9965-4DAB-BAE6-F4C1627C0E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{244F9505-9965-4DAB-BAE6-F4C1627C0E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{244F9505-9965-4DAB-BAE6-F4C1627C0E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{244F9505-9965-4DAB-BAE6-F4C1627C0E91}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4AAA209D-899A-4637-B90B-DAFB00AFD0E3} = {F8A87474-4161-474A-A402-CF488A95F452}
+		{7192D2C2-E267-48E4-9757-592BE0237D73} = {F8A87474-4161-474A-A402-CF488A95F452}
+		{4C2E88EC-04EF-49C3-8CE4-283C7A10B11B} = {F8A87474-4161-474A-A402-CF488A95F452}
+		{FFB01332-5A50-4CCE-8370-638E4676F2C1} = {F8A87474-4161-474A-A402-CF488A95F452}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 10
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://192.168.1.211:8080/tfs/%E5%A4%9A%E7%BB%B4%E8%AF%84%E4%BB%B7%E7%B3%BB%E7%BB%9F
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = FEHandler\\FEHandler.csproj
+		SccProjectName1 = FEHandler
+		SccLocalPath1 = FEHandler
+		SccProjectUniqueName2 = FEUtility\\FEUtility.csproj
+		SccProjectTopLevelParentUniqueName2 = FeedbackEvaluation.sln
+		SccProjectName2 = FEUtility
+		SccLocalPath2 = FEUtility
+		SccProjectUniqueName3 = FEWeb\\FEWeb.csproj
+		SccProjectName3 = FEWeb
+		SccLocalPath3 = FEWeb
+		SccProjectUniqueName4 = FEBLL\\FEBLL.csproj
+		SccProjectTopLevelParentUniqueName4 = FeedbackEvaluation.sln
+		SccProjectName4 = FEBLL
+		SccLocalPath4 = FEBLL
+		SccProjectUniqueName5 = FEDAL\\FEDAL.csproj
+		SccProjectTopLevelParentUniqueName5 = FeedbackEvaluation.sln
+		SccProjectName5 = FEDAL
+		SccLocalPath5 = FEDAL
+		SccProjectUniqueName6 = FEIBLL\\FEIBLL.csproj
+		SccProjectTopLevelParentUniqueName6 = FeedbackEvaluation.sln
+		SccProjectName6 = FEIBLL
+		SccLocalPath6 = FEIBLL
+		SccProjectUniqueName7 = FEIDAL\\FEIDAL.csproj
+		SccProjectTopLevelParentUniqueName7 = FeedbackEvaluation.sln
+		SccProjectName7 = FEIDAL
+		SccLocalPath7 = FEIDAL
+		SccProjectUniqueName8 = FEModel\\FEModel.csproj
+		SccProjectTopLevelParentUniqueName8 = FeedbackEvaluation.sln
+		SccProjectName8 = FEModel
+		SccLocalPath8 = FEModel
+		SccProjectUniqueName9 = FE_Test\\FE_Test.csproj
+		SccProjectName9 = FE_Test
+		SccLocalPath9 = FE_Test
+	EndGlobalSection
+EndGlobal

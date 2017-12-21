@@ -1,0 +1,485 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="author" content="">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="Expires" content="-1">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta name="description" content="">
+	<meta name="Keywords" content="">
+	<title>调查与测验</title>
+	<link rel="stylesheet" href="css/reset.css" />
+	<link rel="stylesheet" href="css/style.css" />
+    <script src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/zepto.min.js"></script>   
+    <script src="js/linq.min.js"></script>
+    <script src="js/MobileCommon.js"></script>
+    <script src="js/ejs.min.js"></script>
+    <!--答题-->
+    <script type="text/template" id="item_table_view">
+        <div class="header" style="position:fixed;">
+            <a href="Index.html" class="back"><i class="iconfont">&#xe647;</i></a>
+            <span class="title"><%=retData.Eva_Task.Name%> 调查与测验</span>
+        </div>
+        <div class="test_time">
+            实时总分：<b id="sp_realtotal" style="color:white;">0</b>分
+        </div>
+        <div class="ti">            
+            <% $.each(retData.eva_detail_list,function(tindex,titem){ %>
+            <div class="test_area indicatype">
+                <% if(titem.QuesType_Id!=3){ %>
+                <div id="div_ques_<%=titem.Id%>" class="test_detail">
+                    <h1 class="test_type">
+                        <b class="order_num"><%=(++tindex)%>.</b><b><%=titem.Name%></b>
+                        <% if(retData.Eva_Task.IsScore==0){ %><b>(<span id="sp_<%=titem.Id%>"></span>分)</b><%}%>                        
+                    </h1>
+                    <% if(retData.Eva_Task.IsScore==0){ %>
+                    <ul id="ul_ques_<%=titem.Id%>" class="radios maxques">
+                        <% if(titem.OptionA!=""){ %>
+                        <li lioption="OptionA">
+                            <span>
+                                A<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionA%>(<b class="numbers"><%=titem.OptionA_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                        <% if(titem.OptionB!=""){ %>
+                        <li lioption="OptionB">
+                            <span>
+                                B<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionB%>(<b class="numbers"><%=titem.OptionB_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                        <% if(titem.OptionC!=""){ %>
+                        <li lioption="OptionC">
+                            <span>
+                                C<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionC%>(<b class="numbers"><%=titem.OptionC_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                        <% if(titem.OptionD!=""){ %>
+                        <li lioption="OptionD">
+                            <span>
+                                D<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionD%>(<b class="numbers"><%=titem.OptionD_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                        <% if(titem.OptionE!=""){ %>
+                        <li lioption="OptionE">
+                            <span>
+                                E<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionE%>(<b class="numbers"><%=titem.OptionE_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                        <% if(titem.OptionF!=""){ %>
+                        <li lioption="OptionF">
+                            <span>
+                                F<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionF%>(<b class="numbers"><%=titem.OptionF_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                    </ul>
+                    <% }else{ %> 
+                    <ul id="ul_ques_<%=titem.Id%>" class="radios maxques">
+                        <% if(titem.OptionA!=""){ %>
+                        <li lioption="OptionA">
+                            <span>
+                                A<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionA%></div>
+                        </li>
+                        <% } %>
+                        <% if(titem.OptionB!=""){ %>
+                        <li lioption="OptionB">
+                            <span>
+                                B<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionB%></div>
+                        </li>
+                        <% } %>
+                        <% if(titem.OptionC!=""){ %>
+                        <li lioption="OptionC">
+                            <span>
+                                C<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionC%></div>
+                        </li>
+                        <% } %>
+                        <% if(titem.OptionD!=""){ %>
+                        <li lioption="OptionD">
+                            <span>
+                                D<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionD%></div>
+                        </li>
+                        <% } %>
+                        <% if(titem.OptionE!=""){ %>
+                        <li lioption="OptionE">
+                            <span>
+                                E<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionE%></div>
+                        </li>
+                        <% } %>
+                        <% if(titem.OptionF!=""){ %>
+                        <li lioption="OptionF">
+                            <span>
+                                F<input type="radio" name="name_<%=titem.Id%>" value="" />
+                            </span>
+                            <div><%=titem.OptionF%></div>
+                        </li>
+                        <% } %>
+                    </ul>
+                    <%} %> 
+                </div>            
+                <% }else{ %>               
+                <div id="div_ques_<%=titem.Id%>" class="test_detail">
+                    <h1 class="test_type">
+                        <b class="order_num"><%=(++tindex)%>.</b><b><%=titem.Name%></b>                        
+                    </h1>
+                    <textarea name="" id="" class="textarea" placeholder="请输入内容"></textarea>
+                </div>          
+                <%} %>                
+            </div>
+            <% }) %>
+        </div>
+    </script>
+
+    <!--试卷展示-->
+    <script type="text/template" id="item_table_show">
+        <div class="header" style="position:fixed;">
+            <a href="Index.html" class="back"><i class="iconfont">&#xe647;</i></a>
+            <span class="title"><%=retData.Eva_Task.Name%> 调查与测验</span>
+        </div>
+        <div class="test_time">
+            实时总分：<b id="sp_realtotal" style="color:white;">0</b>分
+        </div>
+        <div class="ti">
+            <% $.each(retData.eva_detail_list,function(tindex,titem){ %>
+            <div class="test_area indicatype">
+                <% if(titem.Ques.QuesType_Id!=3){ %>
+                <div id="div_ques_<%=titem.Ques.Id%>" class="test_detail">
+                    <h1 class="test_type">
+                        <b class="order_num"><%=(++tindex)%>.</b><b><%=titem.Ques.Name%></b>
+                        <% if(retData.Eva_Task.IsScore==0){ %><b>(<span id="sp_<%=titem.Ques.Id%>"></span>分)</b><%}%>
+                    </h1>
+                    <% if(retData.Eva_Task.IsScore==0){ %>
+                    <ul id="ul_ques_<%=titem.Ques.Id%>" class="radios maxques">
+                        <% if(titem.Ques.OptionA!=""){ %>
+                        <li lioption="OptionA" class='<%=titem.Answer=="OptionA"?"on":""%>'>
+                            <span>
+                                A<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionA%>(<b class="numbers"><%=titem.Ques.OptionA_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                        <% if(titem.Ques.OptionB!=""){ %>
+                        <li lioption="OptionB" class='<%=titem.Answer=="OptionB"?"on":""%>'>
+                            <span>
+                                B<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionB%>(<b class="numbers"><%=titem.Ques.OptionB_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                        <% if(titem.Ques.OptionC!=""){ %>
+                        <li lioption="OptionC" class='<%=titem.Answer=="OptionC"?"on":""%>'>
+                            <span>
+                                C<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionC%>(<b class="numbers"><%=titem.Ques.OptionC_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                        <% if(titem.Ques.OptionD!=""){ %>
+                        <li lioption="OptionD" class='<%=titem.Answer=="OptionD"?"on":""%>'>
+                            <span>
+                                D<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionD%>(<b class="numbers"><%=titem.Ques.OptionD_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                        <% if(titem.Ques.OptionE!=""){ %>
+                        <li lioption="OptionE" class='<%=titem.Answer=="OptionE"?"on":""%>'>
+                            <span>
+                                E<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionE%>(<b class="numbers"><%=titem.Ques.OptionE_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                        <% if(titem.Ques.OptionF!=""){ %>
+                        <li lioption="OptionF" class='<%=titem.Answer=="OptionF"?"on":""%>'>
+                            <span>
+                                F<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionF%>(<b class="numbers"><%=titem.Ques.OptionF_S%></b>分)</div>
+                        </li>
+                        <% } %>
+                    </ul>
+                    <% }else{ %>
+                    <ul id="ul_ques_<%=titem.Ques.Id%>" class="radios maxques">
+                        <% if(titem.Ques.OptionA!=""){ %>
+                        <li lioption="OptionA" class='<%=titem.Answer=="OptionA"?"on":""%>'>
+                            <span>
+                                A<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionA%></div>
+                        </li>
+                        <% } %>
+                        <% if(titem.Ques.OptionB!=""){ %>
+                        <li lioption="OptionB" class='<%=titem.Answer=="OptionB"?"on":""%>'>
+                            <span>
+                                B<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionB%></div>
+                        </li>
+                        <% } %>
+                        <% if(titem.Ques.OptionC!=""){ %>
+                        <li lioption="OptionC" class='<%=titem.Answer=="OptionC"?"on":""%>'>
+                            <span>
+                                C<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionC%></div>
+                        </li>
+                        <% } %>
+                        <% if(titem.Ques.OptionD!=""){ %>
+                        <li lioption="OptionD" class='<%=titem.Answer=="OptionD"?"on":""%>'>
+                            <span>
+                                D<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionD%></div>
+                        </li>
+                        <% } %>
+                        <% if(titem.Ques.OptionE!=""){ %>
+                        <li lioption="OptionE" class='<%=titem.Answer=="OptionE"?"on":""%>'>
+                            <span>
+                                E<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionE%></div>
+                        </li>
+                        <% } %>
+                        <% if(titem.Ques.OptionF!=""){ %>
+                        <li lioption="OptionF" class='<%=titem.Answer=="OptionF"?"on":""%>'>
+                            <span>
+                                F<input type="radio" name="name_<%=titem.Ques.Id%>" value="" />
+                            </span>
+                            <div><%=titem.Ques.OptionF%></div>
+                        </li>
+                        <% } %>
+                    </ul> 
+                    <%} %> 
+                </div>
+                <% }else{ %>
+                <div id="div_ques_<%=titem.Ques.Id%>" class="test_detail">
+                    <h1 class="test_type">
+                        <b class="order_num"><%=(++tindex)%>.</b><b><%=titem.Ques.Name%></b>                        
+                    </h1>
+                    <textarea class="textarea"><%=titem.Answer%></textarea>
+                </div>
+                <%} %>                
+            </div>
+            <% }) %>
+        </div>
+    </script>
+</head>
+<body>
+    <div id="main"></div>
+    <div class="submitwrap">
+        <input type="submit" id="btn_submit" class="button" value="提交"  style="display:none;"/>
+    </div>
+	<script type="text/javascript">
+        mui.init({
+            swipeBack: true,//启用右滑关闭功能
+            keyEventBind: {
+                backbutton: true  //启动back按键监听
+            },
+            statusBarBackground: '#6a264b',
+        });
+        var UrlDate = new GetUrlDate();
+        var task_Id = UrlDate.id;        
+        var isAnswer = UrlDate.isaw; //是否答题 0未答题；1已答题
+        var total = 0;//试卷总分数   
+        var IsStuRole = (login_User.Sys_Role == "学生" || login_User.Sys_Role == "教学信息员") ? 0 : 1;
+        $(function () {           
+            if (isAnswer == 1) { //已答题
+                Get_Eva_TaskAnswer_ById();
+            } else {
+                if (isAnswer == 0) { //从手机端首页进入
+                    initdata();
+                } else {
+                    if (IsStuRole==0) {
+                        GetIsAnswer_Eva_ById(); //扫码后，判断是否答题
+                    } else {
+                        Get_Eva_TaskAnswer_ById(); //学生以外的角色只能查看
+                    }                    
+                }                
+            }            
+            $('#btn_submit').on('tap', function () {
+                SaveEvlData();
+            });
+        });       
+        //判断是否已经答过题
+        function GetIsAnswer_Eva_ById() {
+            $.ajax({
+                url: HanderServiceUrl + "/Eva_Manage/Eva_ManageHandler.ashx",
+                type: "post",
+                async: false,
+                dataType: "json",
+                data: { Func: "GetIsAnswer_Eva_ById", "Id": task_Id, StudentUID: login_User.UniqueNo },
+                success: function (json) {                  
+                    if (json.result.errNum == 0) { //未答题                        
+                        initdata();
+                    } else if (json.result.errNum == 1) { //已经答过                       
+                        Get_Eva_TaskAnswer_ById();
+                    } else { 
+                        window.location.href = "NoCode.html?te=" + json.result.errNum;
+                    }                    
+                },
+                error: function () { } //接口错误时需要执行的
+            });
+        }
+        //初始化表格列表
+        function initdata() {
+            $("#btn_submit").show();
+            $("#main").empty();
+            $.ajax({
+                url: HanderServiceUrl + "/Eva_Manage/Eva_ManageHandler.ashx",
+                type: "post",
+                async: false,
+                dataType: "json",
+                data: { Func: "Get_Eva_Common_ById_Mobile", "Id": task_Id },
+                success: function (json) {
+                    if (json.result.errNum == 0) {
+                        var retData = json.result.retData;                        
+                        $("#main").append(ejs.render($('#item_table_view').html(), { retData: retData }));
+                        GetTask_Score(0, retData.Eva_Task.IsScore);
+                        InitControl(retData.Eva_Task.IsScore);
+                    }
+                },
+                error: function () {
+                    //接口错误时需要执行的
+                }
+            });
+        }
+        function SaveEvlData() {
+            var realscore = $("#sp_realtotal").html();
+            var obj = new Object();
+            obj.func = "AddEva_TaskAnswer";
+            obj.Task_Id = task_Id;
+            obj.CreateUID = login_User.UniqueNo;
+            obj.EditUID = login_User.UniqueNo;
+            var array = [];
+            var flg = 0;
+            $(".test_detail").each(function () {
+                var li_ques=$(this).find("li.on");
+                if ($(this).find("li").length != 0 &&li_ques.length==0) {
+                    flg++;
+                    MesTips('请答题完整！');
+                    return false;
+                }
+                var area_q= $(this).find("textarea");
+                if (area_q.length != 0 && area_q.val().trim() == "") {
+                    flg++;
+                    MesTips('请答题完整！');
+                    return false;
+                }
+                var sub_array = new Object();
+                var TableDetail_Id = $(this).attr("id").replace("div_ques_", "");
+                var sub_Score = $(this).find("li.on").find('b.numbers').html() || "";
+                var Answer = "";
+                if (area_q.length != 0) Answer=area_q.val().trim();
+                if(li_ques.length!=0)Answer=li_ques.attr("lioption");                                
+                sub_array.TableDetail_Id = TableDetail_Id;
+                sub_array.Score = sub_Score;
+                sub_array.Answer = Answer;
+                array.push(sub_array);
+            });
+            obj.List = JSON.stringify(array);
+            if (flg == 0) {
+                $.ajax({
+                    url: HanderServiceUrl + "/Eva_Manage/Eva_ManageHandler.ashx",
+                    type: "post",
+                    async: false,
+                    dataType: "json",
+                    data: obj,
+                    success: function (json) {                       
+                        if (json.result.errMsg == "success") {                            
+                            MesTips('提交成功');
+                            window.location.href = "Index.html";
+                            //$("#btn_submit").parent().hide();
+                            //$('.ti').css('paddingBottom', '10px');
+                            //$('.radios li').off('tap');
+                            //InitControl_Answer();
+                        }
+                    },
+                    error: function () {
+                        //接口错误时需要执行的
+                    }
+                });
+            }
+        }
+
+        //学生查看试卷
+        function Get_Eva_TaskAnswer_ById() {
+            $("#btn_submit").parent().hide();
+            $("#main").empty();
+            var params = { Func: "Get_Eva_TaskAnswer_ById_Mobile", "Id": task_Id, StudentUID: login_User.UniqueNo };            
+            $.ajax({
+                url: HanderServiceUrl + "/Eva_Manage/Eva_ManageHandler.ashx",
+                type: "post",
+                async: false,
+                dataType: "json",
+                data: params,
+                success: function (json) {
+                    if (json.result.errNum == 0) {
+                        var retData = json.result.retData;                       
+                        $("#main").append(ejs.render($('#item_table_show').html(), { retData: retData }));
+                        $('.ti').css('paddingBottom', '10px');
+                        GetTask_Score(1, retData.Eva_Task.IsScore);
+                        InitControl_Answer();
+                    }
+                },
+                error: function () {
+                    //接口错误时需要执行的
+                }
+            });
+        }
+        function GetTask_Score(type,isscore) { //答题-设置分数
+            type = arguments[0] || 0;
+            if (isscore==0) {
+                $(".indicatype").each(function () {
+                    //求最大分
+                    $(this).find(".maxques").each(function () {
+                        var numbers1 = [];
+                        $(this).find(".numbers").each(function () {
+                            numbers1.push($(this).html());
+                        })
+                        var max = Math.max.apply(null, numbers1);
+                        $("#sp_" + $(this).attr("id").replace("ul_ques_", "")).html(max);
+                    });
+                });
+                if (type != 0) {
+                    var realTotal = 0;//实时总分
+                    $(".radios li").each(function () {
+                        if ($(this).hasClass('on')) {
+                            realTotal=numAdd(realTotal,$(this).find('b.numbers').html());
+                        }
+                    });
+                    $("#sp_realtotal").html(realTotal);
+                }
+            }
+            else {
+                $("#sp_realtotal").html("不计");
+            }
+        }       
+	</script>
+</body>
+</html>

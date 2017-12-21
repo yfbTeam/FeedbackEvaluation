@@ -1,0 +1,146 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="description" content="">
+    <meta name="Keywords" content="">
+    <title>登录</title>
+    <link href="css/mui.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script> 
+    <script src="js/MobileCommon.js"></script>     
+</head>
+<body class="login_bg">
+    <div class="mui-content">
+        <img src="/images/logo.png" alt="Alternate Text" id="logo"/>
+        <p class="sub_title">教学质量管理与多维评价系统</p>
+        <form id="loginform" name="loginform">
+            <ul id="sortable1" class="con">
+                <li class="xian">
+                    <span class="icon">
+                        <img src="images/1.png" alt="Alternate Text" />
+                    </span>
+                    <input id="txt_loginName" type="text" class="kuang fr" placeholder="请输入用户名" />
+                </li>
+                <li class="xian">
+                    <span class="icon">
+                        <img src="images/2.png" alt="Alternate Text" />
+                    </span>
+                    <input id="txt_passWord" type="password" class="kuang fr" placeholder="请输入密码" />
+                </li>
+                <li class="yzm xian">
+                    <span class="icon">
+                        <img src="images/3.png" alt="Alternate Text"  />
+                    </span>
+                    <input id="inpCode" name="inpCode" type="text" class="kuang" placeholder="请输入验证码" style="padding-right:100px" />
+                    <span class="yzmtu" id="checkCode" onclick="createCode() "></span>
+                </li>
+            </ul>
+            <!--<a href="Register.html" class="register">新用户注册</a>-->
+            <input type="button" id="BtnLogin" name="BtnLogin" class="btn_btn" value="登录" />
+        </form>
+    </div>
+    <p class="zi">版权所有 Copyright 2017 © 北方工业大学</p>
+    <script>
+        mui.init({
+            swipeBack: true,//启用右滑关闭功能
+            keyEventBind: {
+                backbutton: true  //启动back按键监听
+            },
+            statusBarBackground: '#38bd6f',
+        });
+        var UrlDate = new GetUrlDate();
+        $(function () {
+            createCode();           
+            var cookie_Userinfo = localStorage.getItem('Userinfo_LG');
+            if (cookie_Userinfo != null) {
+                if (document.referrer && document.referrer.toLocaleLowerCase().indexOf("onlinetest.html") > -1) {
+                    window.location.href = document.referrer;                    
+                } else {
+                    window.location.href = "Index.html";
+                }                
+            } else {
+                $('#BtnLogin').on('tap', function () {
+                    Login();
+                });
+            }
+        })
+        var code; //在全局 定义验证码
+        function createCode() {
+            code = "";
+            var codeLength = 4;//验证码的长度
+            var checkCode = document.getElementById("checkCode");
+            checkCode.innerHTML = "";
+            var selectChar = new Array(0,1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+            for (var i = 0; i < codeLength; i++) {
+                var charIndex = Math.floor(Math.random() * 60);
+                code += selectChar[charIndex];
+            }
+            if (code.length != codeLength) {
+                createCode();
+            }
+            checkCode.innerHTML = code;
+            $("#hidCode").val(code);
+            //$("#inpCode").val(code);
+        }
+        function Login() {
+            var loginName = $("#txt_loginName").val().trim();
+            var passWord = $("#txt_passWord").val().trim();
+            var code = $("#inpCode").val().trim();
+            if (!loginName.length) {
+                MesTips("请输入用户名！");
+                return;
+            }
+            if (!passWord.length) {
+                MesTips("请输入密码！");
+                return;
+            }
+            if (!code.length) {
+                MesTips("请输入验证码！");
+                return;
+            }
+            var postData = { "Func": "Login", "loginName": loginName, "passWord": passWord };
+            $.ajax({
+                type: "Post",
+                url: HanderServiceUrl + "/Login/LoginHandler.ashx",
+                data: postData,
+                dataType: "json",
+                async: false,
+                success: function (returnVal) {
+                    if (returnVal.result.errMsg == "success") {
+                        var data = returnVal.result.retData;
+                        //把用户信息存在cookie中
+                        localStorage.setItem('Userinfo_LG', JSON.stringify(data));
+                        if (document.referrer && document.referrer.toLocaleLowerCase().indexOf("onlinetest.html") > -1) {
+                            window.location.href = document.referrer;
+                            //openwindow(document.referrer, document.referrer, 'slide-in-right');
+                        } else {
+                            window.location.href = "Index.html";
+                           // openwindow('Index.html', 'Index.html', 'slide-in-right');
+                         }                        
+                    }
+                    else {
+                        MesTips("用户名密码错误");
+                        createCode();
+                    }
+                },
+                error: function (errMsg) {
+                    MesTips("登录发生错误");
+                    createCode();
+                }
+            });
+        }       
+    </script>
+</body>
+</html>

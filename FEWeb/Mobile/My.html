@@ -1,0 +1,99 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="description" content="">
+    <meta name="Keywords" content="">
+    <title>我的</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script src="js/linq.min.js"></script>
+    <script src="js/MobileCommon.js"></script>
+    <script src="js/ejs.min.js"></script>
+    <!--个人信息-->
+    <script type="text/template" id="item_MyInfo">
+        <div class="mybg">
+            <img src="images/mybg.jpg" alt="" class="bg" />
+            <div>
+                <i class="photo clearfix"><img src="<%=HanderServiceUrl+retData.HeadPic%>" onerror="javascript: this.src = 'images/ren.jpg'"/></i>
+                <span class="role clearfix"><%=retData.Sys_Role%></span>
+                <p class="name"><%=retData.Name%></p>
+            </div>
+        </div>
+        <div class="input_row" id="photo">
+            <label>头像</label>
+            <div class="photo">
+                <img src="<%=HanderServiceUrl+retData.HeadPic%>" onerror="javascript: this.src = 'images/ren.jpg'"/>
+            </div>
+            <!--<i class="iconfont">&#xe60c;</i>
+            <input type="file" name="fileToUpload" class="fileToUpload" accept="image/*" />-->
+        </div>
+        <div class="input_row">
+            <label>账号</label>
+            <span><%=retData.LoginName%></span>
+        </div>
+        <div class="input_row">
+            <label>手机</label>
+            <span><%=retData.Phone%></span>
+        </div>
+        <div class="input_row">
+            <label>邮箱</label>
+            <span><%=retData.Email%></span>
+        </div>
+        <a class="input_row mt10" href="EditPwd.html" style="border-top: 1px solid #E5E7E6;">
+            <label>修改密码</label>
+        </a>
+        <a href="javascript:;" class="row" id="loginOut">退出登录</a>
+    </script>
+</head>
+<body>
+    <header class="header">
+        <span class="title">我的</span>
+    </header>    
+    <div id="div_MyInfo" class="content"></div>
+    <footer class="footer">
+        <a href="Index.html">
+            <i class="iconfont">&#xe629;</i>
+            <b></b>
+            <p>首页</p>
+        </a>
+        <a href="Feedback.html">
+            <i class="iconfont">&#xe6ce;</i>
+            <b></b>
+            <p>互动反馈</p>
+        </a>
+        <a href="My.html" class="active">
+            <i class="iconfont">&#xe692;</i>
+            <b></b>
+            <p>我的</p>
+        </a>
+    </footer>
+    <script>
+        mui.init({
+            swipeBack: true,//启用右滑关闭功能
+            keyEventBind: {
+                backbutton: true  //启动back按键监听
+            },
+            statusBarBackground: '#6a264b',
+        });
+        $(function () {
+            $("#div_MyInfo").append(ejs.render($("#item_MyInfo").html(), { retData: login_User}));
+            $('#loginOut').on('tap', function () {
+                localStorage.removeItem('Userinfo_LG');
+                window.location.href = "Login.html";
+            });
+        });        
+    </script>
+</body>
+</html>

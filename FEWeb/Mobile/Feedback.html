@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="description" content="">
+    <meta name="Keywords" content="">
+    <title>互动反馈</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script src="js/linq.min.js"></script>
+    <script src="js/MobileCommon.js"></script>
+    <script src="js/ejs.min.js"></script>
+    <!--实名联系人-->
+    <script type="text/template" id="item_RealFeed">
+        <% $.each(retData,function(index,item){ %>
+        <li uvalue="<%=item.UniqueNo%>" class='<%=item.ReadCount>0?"active":""%>'>
+            <a href="javascript:;">
+                <div class="img">
+                    <img src="<%=HanderServiceUrl+item.HeadPic%>" onerror="javascript:this.src='images/tu1.jpg'" alt="Alternate Text" /><b></b>
+                </div>
+                <div class="desc">
+                    <h2>
+                        <span class="people"><%=item.Name%></span>
+                        <span class="time"><%=DateTimeConvert(item.LastMessage.CreateTime,"yyyy-MM-dd HH:mm")%></span>
+                    </h2>
+                    <p>
+                        <% if(item.ReadCount>0){ %><span>[<%=item.ReadCount%>条]</span><%} %>
+                        <%=item.LastMessage.Content%>
+                    </p>
+                </div>
+            </a>
+        </li>
+        <% }) %>
+    </script>
+</head>
+<body>
+    <header class="header">
+        <span class="title">互动反馈</span>
+        <a id="a_SelectTea" href="SeleTeadcher.html?tp=0" class="add" style="display:none;">
+            <i class="iconfont">&#xe607;</i>
+        </a>
+    </header>
+    <div class="content">
+        <div id="div_BtnOp" class="chat" style="display:none;">
+            <a href="SeleTeadcher.html?tp=0">
+                <i class="iconfont">&#xe607;</i>
+                发起互动
+            </a>
+        </div>
+        <ul id="ul_AnonSum" class="link_lists" style="padding-top:45px;">
+            <li>
+                <a id="a_Anony" href="javascript:;">
+                    <div class="img">
+                        <img src="images/tu3.jpg" alt="Alternate Text" /><b></b>
+                    </div>
+                    <div class="desc">
+                        <h2>
+                            <span class="people">匿名聊天</span>
+                            <span id="span_Time" class="time"></span>
+                        </h2>
+                        <p id="p_Content"></p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul id="ul_RealFeed" class="link_lists" style="padding-top:0px;"></ul>
+
+    </div>
+    <footer class="footer">
+        <a href="Index.html">
+            <i class="iconfont">&#xe629;</i>
+            <b></b>
+            <p>首页</p>
+        </a>
+        <a href="Feedback.html" class="active">
+            <i class="iconfont">&#xe6ce;</i>
+            <b></b>
+            <p>互动反馈</p>
+        </a>
+        <a href="My.html">
+            <i class="iconfont">&#xe692;</i>
+            <b></b>
+            <p>我的</p>
+        </a>
+    </footer>
+    <script type="text/javascript">
+        mui.init({
+            swipeBack: true,//启用右滑关闭功能
+            keyEventBind: {
+                backbutton: true  //启动back按键监听
+            },
+            statusBarBackground: '#6a264b',
+        });        
+        var UrlDate = new GetUrlDate();
+        var IsStuRole = (login_User.Sys_Role == "学生" || login_User.Sys_Role == "教学信息员") ? 0 : 1;
+        $(function () {
+            $("#a_Anony").attr("href", IsStuRole==0 ? "AnonymousChat_Stu.html" : "AnonymousChat.html");
+            if (IsStuRole == 0) {
+                $("#div_BtnOp").show();
+                $("#a_SelectTea").show();
+            } else {
+                $("#div_BtnOp").hide();
+                $("#a_SelectTea").hide();
+                $("#ul_AnonSum").css("padding-top", 0);
+            }
+            GetLatelyContacts_Model();
+            GetUnRead_Statistical();
+        });
+
+        //最近联系
+        function GetLatelyContacts_Model() {
+            $.ajax({
+                url: HanderServiceUrl + "/InteractFeed/Feed_DiscussHandler.ashx",
+                type: "post",
+                dataType: "json",
+                data: {
+                    Func: "GetLatelyContacts_Model",
+                    LoginUID: login_User.UniqueNo,
+                    User_Role: IsStuRole
+                },
+                success: function (json) {
+                    if (json.result.errNum.toString() == "0") {
+                        $('#ul_RealFeed').html('');
+                        rtndata = json.result.retData;
+                        if (rtndata.length == 0) {
+                            if (IsStuRole == 0) {
+                                nomessage('ul_RealFeed', '115', '0');
+                            } else {
+                                nomessage('ul_RealFeed', '70', '0');
+                            }
+
+                            return;
+                        }
+                        $('#ul_RealFeed').append(ejs.render($('#item_RealFeed').html(), { retData: rtndata }));
+                        $('#ul_RealFeed li').on('tap', function () {
+                            window.location.href = 'ChatDetail.html?recuid=' + $(this).attr("uvalue") + '&rname=' + encodeURIComponent($(this).find("span.people").html());
+                        });
+                    }
+                    else {
+                        if (IsStuRole == 0) {
+                            nomessage('ul_RealFeed', '115', '0');
+                        } else {
+                            nomessage('ul_RealFeed', '70', '0');
+                        }
+                    }
+                },
+                error: function (errMsg) {
+                    if (IsStuRole == 0) {
+                        nomessage('ul_RealFeed', '115', '0');
+                    } else {
+                        nomessage('ul_RealFeed', '70', '0');
+                    }
+                }
+            });
+        }
+
+        //匿名聊天汇总信息
+        function GetUnRead_Statistical() {
+            $.ajax({
+                url: HanderServiceUrl + "/InteractFeed/Feed_DiscussHandler.ashx",
+                type: "post",
+                dataType: "json",
+                data: {
+                    Func: "GetUnRead_Statistical",
+                    LoginUID: login_User.UniqueNo,
+                    User_Role: IsStuRole
+                },
+                success: function (json) {
+                    if (json.result.errNum.toString() == "0") {
+                        var rtndata1 = json.result.retData;
+                        var readCount = rtndata1.ReadCount;
+                        var lastMessage = rtndata1.LastMessage;
+                        if (readCount > 0) {
+                            $("#span_Time").html(DateTimeConvert(lastMessage.CreateTime, "yyyy-MM-dd HH:mm"));
+                            $("#p_Content").html('<span>[' + readCount + '条]</span>' + lastMessage.Content);
+                            $("#ul_AnonSum").find("li").addClass("active");
+                        } else {
+                            if (lastMessage != null) {
+                                $("#span_Time").html(DateTimeConvert(lastMessage.CreateTime, "yyyy-MM-dd HH:mm"));
+                                $("#p_Content").html(lastMessage.Content);
+                            }
+                        }
+                    }
+                },
+                error: function (errMsg) { }
+            });
+        }
+    </script>
+</body>
+</html>

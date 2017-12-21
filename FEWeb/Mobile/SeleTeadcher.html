@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="description" content="">
+    <meta name="Keywords" content="">
+    <title>选择教师</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script src="js/linq.min.js"></script>
+    <script src="js/MobileCommon.js"></script>
+    <script src="js/ejs.min.js"></script>
+    <!--教师列表-->
+    <script type="text/template" id="item_Tea">
+        <% $.each(retData,function(index,item){ %>
+        <li uvalue="<%=item.UniqueNo%>">
+            <a href="javascript:;">
+                <div class="img">
+                    <img src="<%=HanderServiceUrl+item.HeadPic%>" onerror="javascript:this.src='images/tu1.jpg'" alt="alternate text" />
+                </div>
+                <span><%=item.Name%></span>
+            </a>
+        </li>       
+        <% }) %>
+    </script>
+</head>
+<body>
+    <header class="header">
+        <span class="title">选择教师</span>
+        <a id="a_Cancel" href="javascript:;" class="cancel">
+            取消
+        </a>
+    </header>
+    <div class="search">
+        <i class="iconfont">&#xe600;</i>
+        <input id="txt_Search" type="text" value="" placeholder="搜索" />
+    </div>
+    <div class="content" style="top:95px;bottom:0;">
+        
+                <ul id="ul_Tea" class="teacher_lists" style="padding-top:0;"></ul>
+    </div>
+    <script type="text/javascript">
+        mui.init({
+            swipeBack: true,//启用右滑关闭功能
+            keyEventBind: {
+                backbutton: true  //启动back按键监听
+            },
+            statusBarBackground: '#6a264b',
+        });
+        var UrlDate = new GetUrlDate();
+
+        var Tea_List = [];
+        $(function () {
+            $("#a_Cancel").attr("href", UrlDate.tp == 0 ? "Feedback.html" : "AnonymousChat_Stu.html");
+            GetTeacherList(UrlDate.tp);
+        });
+ 
+        //加载教师列表
+        function GetTeacherList(distype) {
+            distype = arguments[0] || 0; //0实名互动；1匿名互动           
+            var $parobj = $("#ul_Tea"), $subobj = $("#item_Tea");
+            $parobj.html("");
+            $.ajax({
+                url: HanderServiceUrl + "/InteractFeed/Feed_DiscussHandler.ashx",
+                type: "post",
+                dataType: "json",
+                data: {
+                    Func: "GetTeachersByStu",
+                    LoginUID: login_User.UniqueNo,
+                    DisType: distype
+                },
+                success: function (json) {
+                    if (json.result.errNum.toString() == "0") {
+                        rtndata = json.result.retData;
+                        Tea_List = rtndata;
+                        if (Tea_List.length == 0) {
+                            nomessage('ul_Tea');
+                            return;
+                        }
+                        $('#ul_Tea').append(ejs.render($('#item_Tea').html(), { retData: Tea_List }));
+
+                        $('#ul_Tea li').on('tap', function () {
+                            window.location.href = (UrlDate.tp == 0 ? 'ChatDetail.html?' : 'AnonymousChat_Detail_Stu.html?anonid=0&cf=1&') + 'recuid=' + $(this).attr("uvalue") + '&rname=' + encodeURIComponent($(this).find("span").html());
+                        });
+                        $('#txt_Search').change(function () {
+                            $parobj.html("");
+                            var sel_List = Tea_List;
+                            sel_List = Enumerable.From(sel_List).Where("x=>x.Name.indexOf('" + $('#txt_Search').val().trim() + "')!= -1 ").ToArray();
+                            if (sel_List.length == 0) {
+                                nomessage('ul_Tea');
+                                return;
+                            }
+                            $parobj.append(ejs.render($subobj.html(), { retData: sel_List }));
+                        });
+                    }
+                    else {
+                        nomessage('ul_Tea');
+                    }
+                },
+                error: function (errMsg) {
+                    nomessage('ul_Tea');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

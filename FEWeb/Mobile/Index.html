@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="description" content="">
+    <meta name="Keywords" content="">
+    <title>首页</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script src="js/linq.min.js"></script>
+    <script src="js/MobileCommon.js"></script>
+    <script src="js/ejs.min.js"></script>
+    <!--待评价表-->
+    <script type="text/template" id="item_WaitEva">
+        <% $.each(retData,function(index,item){ %>
+        <li>
+            <a href="<% if(item.type==1){ %> RegularEva_Table.html?Id=<%=item.dis_Id%>&Course_Id=<%=item.course_UniqueNo%>&course_Name=<%=item.course_Name.replace(/(^\s*)|(\s*$)/g,'')%>&Teacher_Id=<%=item.teacher_Unique%>&Teacher_Name=<%=item.teacher_Name%>&section=<%=item.section_Id%>&Table_Id=<%=item.table_Id%> <% }else if(item.type==2||item.type==3){%> onlinetest.html?id=<%=item.task_Id%>&isaw=0 <% } %>">
+                <h2 class="title"><%=item.regu_Name%></h2>
+                <p>
+                    <span class="type"><%=item.type_Name%>-<%=item.teacher_Name%></span>
+                    <span class="time"><%=DateTimeConvert(item.eva_regu_CreatTime)%></span>
+                </p>
+            </a>
+            <i class="iconfont">&#xe60c;</i>            
+        </li>
+        <% }) %>
+    </script>
+    <!--已评价表-->
+    <script type="text/template" id="item_HasEva">
+        <% $.each(retData,function(index,item){ %>
+        <li>
+            <a href="<% if(item.type==1){ %> RegularEva_View.html?Id=<%=item.dis_Id%>&Course_Id=<%=item.course_UniqueNo%>&course_Name=<%=item.course_Name.replace(/(^\s*)|(\s*$)/g,'')%>&Teacher_Id=<%=item.teacher_Unique%>&Teacher_Name=<%=item.teacher_Name%>&section=<%=item.section_Id%>&Table_Id=<%=item.table_Id%> <% }else if(item.type==2||item.type==3){%> onlinetest.html?id=<%=item.task_Id%>&isaw=1 <% } %>">
+                <h2 class="title"><%=item.regu_Name%></h2>
+                <p>
+                    <span class="type"><%=item.type_Name%>-<%=item.teacher_Name%></span>
+                    <span class="time"><%=DateTimeConvert(item.eva_regu_CreatTime)%></span>
+                </p>
+            </a>
+            <i class="iconfont">&#xe60c;</i>
+        </li>
+        <% }) %>
+    </script>
+</head>
+<body>
+    <header class="header">
+        <!--<div class="photo">
+            <img src="images/ren.jpg" alt="" />
+        </div>-->
+        <span class="title">首页</span>
+    </header>
+    <div class="message_wrap">
+        <a href="Feedback.html" class="active">
+            <span id="span_IxReadCount"></span>
+            <p>未读消息</p>
+        </a>
+        <a href="javascript:;">
+            <span id="span_WaitEva_Count"></span>
+            <p>待评价表</p>
+        </a>
+    </div>
+    <nav class="nav">
+        <a href="javascript:;" class="active">待评价表</a>
+        <a href="javascript:;">已评价表</a>
+    </nav>
+    <div class="content" style="top:150px;">
+
+        <div class="lists_wrap">
+            <ul id="ul_WaitEva" class="eval_lists"></ul>
+            <ul id="ul_HasEva" class="eval_lists" style="display:none;"></ul>
+        </div>
+    </div>
+    <footer class="footer">
+        <a href="Index.html" class="active">
+            <i class="iconfont">&#xe629;</i>
+            <b></b>
+            <p>首页</p>
+        </a>
+        <a href="Feedback.html">
+            <i class="iconfont">&#xe6ce;</i>
+            <b></b>
+            <p>互动反馈</p>
+        </a>
+        <a href="My.html">
+            <i class="iconfont">&#xe692;</i>
+            <b></b>
+            <p>我的</p>
+        </a>
+    </footer>
+    <script>
+        mui.init({
+            swipeBack: true,//启用右滑关闭功能
+            keyEventBind: {
+                backbutton: true  //启动back按键监听
+            },
+            statusBarBackground: '#6a264b',
+        });
+        var UrlDate = new GetUrlDate();
+        $(function () {
+            $('.nav a').on('tap', function () {
+                $(this).addClass('active').siblings().removeClass('active');
+                var n = $(this).index();
+                $('.lists_wrap>ul').eq(n).css('display', 'block').siblings().css('display', 'none');
+            });
+            Get_Backlog();
+        });
+        //获取评价
+        function Get_Backlog() {
+            $("#ul_WaitEva").empty();
+            $("#ul_HasEva").empty();
+            var StudentUID = GetLoginUser().UniqueNo;
+            $.ajax({
+                url: HanderServiceUrl + "/Eva_Manage/Eva_ManageHandler.ashx",
+                type: "post",
+                async: false,
+                dataType: "json",
+                data: { Func: "Get_Backlog", StudentUID: StudentUID,Evaluate:3},
+                success: function (json) {                    
+                    var retDataCache = json.result.retData;
+                    if (retDataCache.length == 0) {
+                        nomessage('ul_WaitEva');
+                        $("#span_WaitEva_Count").html(0);
+                        nomessage('ul_HasEva');
+                        return;
+                    }
+                    //筛选待评价的                       
+                    var waitList = Enumerable.From(retDataCache).Where("item=>item.is_answer==false").ToArray();
+                    $("#span_WaitEva_Count").html(waitList.length);
+                    if (waitList.length > 0) {
+                        $("#ul_WaitEva").append(ejs.render($('#item_WaitEva').html(), { retData: waitList }));
+                    } else {
+                        nomessage('ul_WaitEva');
+                    }                    
+
+                    //筛选已评价的  
+                    var hasList = Enumerable.From(retDataCache).Where("item=>item.is_answer==true").ToArray();
+                    if (hasList.length > 0) {
+                        $("#ul_HasEva").append(ejs.render($('#item_HasEva').html(), { retData: hasList }));
+                    } else {
+                        nomessage('ul_HasEva');
+                    }                    
+                },
+                error: function () {
+                    //接口错误时需要执行的
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1B407016-C210-454E-B007-B41F8623BB3F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FEHandler</RootNamespace>
+    <AssemblyName>FEHandler</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\FEUtility\dll\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Eva_Manage\Eva_ManageHandler.ashx" />
+    <Content Include="SystemSetting\SystemSetting_Handler.ashx" />
+    <Content Include="Login\LoginHandler.ashx" />
+    <Content Include="student\StudentHander.ashx" />
+    <Content Include="UserMan\UserManHandler.ashx" />
+    <Content Include="SysClass\ClassInfoHandler.ashx" />
+    <Content Include="SysClass\CourseInfoHandler.ashx" />
+    <Content Include="SysClass\ProfessInfoHandler.ashx" />
+    <Content Include="SetMenu\SetMenuHandler.ashx" />
+    <Content Include="Email\EmailHandler.ashx" />
+    <None Include="Properties\PublishProfiles\handle.pubxml" />
+    <Content Include="SetMenu\SetPassWordHandler.ashx" />
+    <Content Include="SetMenu\SetUserPicHandler.ashx" />
+    <Content Include="Report\ReportHandler.ashx" />
+    <Content Include="Report\ReportHandlerNew.ashx" />
+    <Content Include="SystemSetting\Sys_LetterHandler.ashx" />
+    <Content Include="TeaAchManage\AchManage.ashx" />
+    <Content Include="SystemInfo\ClassInfoHandler.ashx" />
+    <Content Include="TeaAchManage\AchRewardInfo.ashx" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UserPic\02.知识业务 逻辑流程图v2.jpg" />
+    <Content Include="UserPic\03.知识生产功能构架图%281.0%29.jpg" />
+    <Content Include="UserPic\20管理老师-系统设置-基本信息-课程分类管理.jpg" />
+    <Content Include="UserPic\3.jpg" />
+    <Content Include="UserPic\lg.png" />
+    <Content Include="UserPic\lg小红.png" />
+    <Content Include="UserPic\物资.png" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constant.cs" />
+    <Compile Include="Email\EmailHandler.ashx.cs">
+      <DependentUpon>EmailHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Eva_Manage\Eva_ManageHandler_Dal.cs" />
+    <Compile Include="Eva_Manage\Eva_ManageHandler_Regu.cs" />
+    <Compile Include="Eva_Manage\Eva_ManageHandler.ashx.cs">
+      <DependentUpon>Eva_ManageHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Eva_Manage\Eva_ManageHandler_ClassHelper.cs" />
+    <Compile Include="Eva_Manage\Eva_ManageHandler_Sys.cs" />
+    <Compile Include="Login\LoginHandler.ashx.cs">
+      <DependentUpon>LoginHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\ReportHandler.ashx.cs">
+      <DependentUpon>ReportHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\ReportHandlerNew.ashx.cs">
+      <DependentUpon>ReportHandlerNew.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="SetMenu\SetMenuHandler.ashx.cs">
+      <DependentUpon>SetMenuHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="SetMenu\SetPassWordHandler.ashx.cs">
+      <DependentUpon>SetPassWordHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="SetMenu\SetUserPicHandler.ashx.cs">
+      <DependentUpon>SetUserPicHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="student\StudentHander.ashx.cs">
+      <DependentUpon>StudentHander.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="SysClass\ClassInfoHandler.ashx.cs">
+      <DependentUpon>ClassInfoHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="SysClass\CourseInfoHandler.ashx.cs">
+      <DependentUpon>CourseInfoHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="SysClass\ProfessInfoHandler.ashx.cs">
+      <DependentUpon>ProfessInfoHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="SystemSetting\SystemSetting_Handler.ashx.cs">
+      <DependentUpon>SystemSetting_Handler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="SystemSetting\Sys_LetterHandler.ashx.cs">
+      <DependentUpon>Sys_LetterHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="TeaAchManage\AchManage.ashx.cs">
+      <DependentUpon>AchManage.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="TeaAchManage\AchRewardInfo.ashx.cs">
+      <DependentUpon>AchRewardInfo.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="UserMan\UserManHandler.ashx.cs">
+      <DependentUpon>UserManHandler.ashx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FEBLL\FEBLL.csproj">
+      <Project>{b4b5e8c9-9065-4988-a41f-a59b49b1181e}</Project>
+      <Name>FEBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEDAL\FEDAL.csproj">
+      <Project>{e0a6d2dc-a46f-448d-adef-03e78eb1bb8b}</Project>
+      <Name>FEDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEIBLL\FEIBLL.csproj">
+      <Project>{7192d2c2-e267-48e4-9757-592be0237d73}</Project>
+      <Name>FEIBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEIDAL\FEIDAL.csproj">
+      <Project>{4c2e88ec-04ef-49c3-8ce4-283c7a10b11b}</Project>
+      <Name>FEIDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEModel\FEModel.csproj">
+      <Project>{ffb01332-5a50-4cce-8370-638e4676f2c1}</Project>
+      <Name>FEModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEUtility\FEUtility.csproj">
+      <Project>{4aaa209d-899a-4637-b90b-dafb00afd0e3}</Project>
+      <Name>FEUtility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>3535</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:3535/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

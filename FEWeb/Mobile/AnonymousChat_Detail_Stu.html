@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="description" content="">
+    <meta name="Keywords" content="">
+    <title>匿名聊天详情</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link href="css/gb.css" rel="stylesheet" />
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script src="js/linq.min.js"></script>
+    <script src="js/MobileCommon.js"></script>
+    <script src="js/ejs.min.js"></script>
+    <!--讨论列表-->
+    <script type="text/template" id="div_DiscussSub">
+        <% $.each(retData,function(index,item){ %>
+        <% if(item.IsShowTime==1){ %>
+        <h2 class="time1"><%=DateTimeConvert(item.rdis.CreateTime)%></h2><%} %>
+        <% if(item.rdis.CreateUID!=$('#Hid_LoginUID').val()){ %>
+        <div class="otherspeak_wrap useposition">
+            <div class="ren">
+                <i></i>
+                <img src="<%=HanderServiceUrl+item.r_HeadPic%>" onerror="javascript: this.src = 'images/ren.jpg'" alt="Alternate Text" />
+            </div>
+            <div class="otherspeak">
+                <% if(item.Type==0&&item.RowNum==2){ %><h2><%=item.Content%></h2><%} %>   
+                <%=item.rdis.Content%>
+                <p><%=DateTimeConvert(item.rdis.CreateTime,'yyyy-MM-dd HH:mm:ss')%></p>
+            </div>
+        </div>
+        <% }else{%>
+        <% if (item.Type==0&&item.RowNum==1){ %>
+           <% }else{%>
+            <div class="myspeak_wrap useposition">
+                <div class="ren">
+                    <i></i>
+                    <img src="<%=HanderServiceUrl+item.c_HeadPic%>" onerror="javascript: this.src = 'images/ren.jpg'" alt="Alternate Text" />
+                </div>
+                <div class="myspeak">
+                    <% if (item.rdis.AuditStatus==0){ %><span style="color:#FC0301;">(待审核)</span><%} %> 
+                    <%=item.rdis.Content%>
+                    <p><%=DateTimeConvert(item.rdis.CreateTime,'yyyy-MM-dd HH:mm:ss')%></p>
+                </div>
+            </div>
+        <% } %>
+        <% } %>
+        <% }) %>
+    </script>
+    <style>
+        .water-mod-eimg .water-list, .water-mod-eimg .water-list li {
+            height: 145px;
+        }
+    </style>
+</head>
+<body>
+    <input type="hidden" id="Hid_LoginUID" />
+    <header class="header">
+        <a id="a_Cancel" href="javascript:;" class="back">
+            <i class="iconfont">&#xe647;</i>
+        </a>
+        <span class="title">匿名聊天详情</span>
+    </header>
+    <div class="content" style="background:#fff;">
+        <div id="div_Discuss" class="chatwrap"></div>
+    </div>
+    <div class="send_wrap">
+        <!--<i class="emoji iconfont">
+            &#xe6b3;
+        </i>-->
+        <div class="sendtext_wrap">
+            <textarea placeholder="请输入内容" class="sendtext" id="emojiInput"></textarea>
+        </div>
+        <input type="button" id="btn_Send" value="发送" class="sendbtn" />
+        <div class="emoji-mod" data-textmod="emoji" id="emojiContainer"></div>
+
+    </div>
+    <script>
+        mui.init({
+            swipeBack: true,//启用右滑关闭功能
+            keyEventBind: {
+                backbutton: true  //启动back按键监听
+            },
+            statusBarBackground: '#6a264b',
+        });
+        var UrlDate = new GetUrlDate();
+        var curReceiveUId = UrlDate.recuid;
+        var curAnoid = UrlDate.anonid;//0新的对话框；大于0 已存在的对话框      
+        $(function () {
+            $("#Hid_LoginUID").val(login_User.UniqueNo);
+            $("#a_Cancel").attr("href", UrlDate.cf == 1 ? "AnonymousChat_Stu.html" : "SeleTopic.html?recuid=" + UrlDate.recuid + "&rname=" + UrlDate.rname);
+            $(".title").html("匿名聊天详情-" + decodeURIComponent(UrlDate.rname));
+            $('.emoji').click(function () {
+                if ($('.emoji-mod').is(':hidden')) {
+                    $('.emoji-mod').show();
+                } else {
+                    $('.emoji-mod').hide();
+                }
+            })
+            $('.sendtext').on('focus', function () {
+                $('.sendbtn').addClass('active'); $('.emoji-mod').hide();
+            }).on('blur', function () {
+                $('.sendbtn').removeClass('active');
+            });
+            $('#btn_Send').on('tap', function () {
+                SendDiscuss();
+            });
+            if (curAnoid != 0) {
+                GetFeed_AnonymityDiscussData(curAnoid);
+                SetAnonymity_DiscussRead(curAnoid);
+            }           
+        });
+        //加载研讨内容
+        function GetFeed_AnonymityDiscussData(anoid) {
+            $("#div_Discuss").html("");
+            $.ajax({
+                url: HanderServiceUrl + "/InteractFeed/Feed_DiscussHandler.ashx",
+                type: "post",
+                dataType: "json",
+                data: {
+                    Func: "GetFeed_AnonymityDiscussData",
+                    CreateUID: $("#Hid_LoginUID").val(),
+                    ReceiveUID: curReceiveUId,
+                    AuditStatus: "0,1",
+                    Id: anoid
+                },
+                success: function (json) {
+                    if (json.result.errNum.toString() == "0") {
+                        var rtndata = json.result.retData;
+                        var isShowTime = 0;
+                        Enumerable.From(rtndata).ForEach(function (value, index) {
+                            if (index == 0) { isShowTime = 1; }
+                            else {
+                                var oldindex = index - 1;
+                                //当前时间和上一条讨论的时间对比，相同则不展示新的时间分组，否则展示新的时间分组
+                                if (DateTimeConvert(value.rdis.CreateTime) == DateTimeConvert(rtndata[oldindex].rdis.CreateTime)) { isShowTime = 0; }
+                                else { isShowTime = 1; }
+                            }
+                            rtndata[index]["IsShowTime"] = isShowTime; //是否展示时间分组（0不展示；1展示）
+                            rtndata[index]["RowNum"] = ++index;
+                        });
+                        $("#div_Discuss").append(ejs.render($("#div_DiscussSub").html(), { retData: rtndata }));
+                        Position_LastDiscuss();
+                    }
+                    else {
+                        $("#div_Discuss").html('<div>暂无研讨内容！</div>');
+                    }
+                },
+                error: function (errMsg) {
+                    $("#div_Discuss").html('<div>暂无研讨内容！</div>');
+                }
+            });
+        }
+        //发送研讨内容
+        function SendDiscuss() {
+            var content = $("#emojiInput").val().trim();
+            if (!content.length || content == "请输入内容") { MesTips("请输入内容"); return; }
+            content = encodeURIComponent(content);
+            if (!curReceiveUId.length) {
+                MesTips("请选择要联系的人!");
+                return;
+            }
+            if (curAnoid == 0) {
+                AddFeed_Anonymity(content);
+            } else {
+                Send_AnonymityDiscuss(content);
+            }
+        }
+        //发送研讨内容(已有记录)
+        function Send_AnonymityDiscuss(content) {
+            $.ajax({
+                url: HanderServiceUrl + "/InteractFeed/Feed_DiscussHandler.ashx",
+                type: "post",
+                async: false,
+                dataType: "json",
+                data: {
+                    Func: "Send_AnonymityDiscuss",
+                    Content: content,
+                    LoginUID: $("#Hid_LoginUID").val(),
+                    ReceiveUID: curReceiveUId,
+                    AnonymityId: curAnoid,
+                    AuditStatus: 0
+                },
+                success: function (json) {
+                    var result = json.result;
+                    if (result.errNum == 0) {
+                        AddToDiscuss(1);
+                    } else {
+                        MesTips(result.errMsg);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    MesTips("操作失败！");
+                }
+            });
+        }
+        //添加话题及研讨内容(第一次回复)
+        function AddFeed_Anonymity(content) {
+            $("#div_Discuss").html("");
+            $.ajax({
+                url: HanderServiceUrl + "/InteractFeed/Feed_DiscussHandler.ashx",
+                type: "post",
+                async: false,
+                dataType: "json",
+                data: {
+                    Func: "AddFeed_Anonymity",
+                    Type: 1,
+                    Content: content,
+                    LoginUID: $("#Hid_LoginUID").val(),
+                    ReceiveUID: curReceiveUId,
+                    AuditStatus: 0
+                },
+                success: function (json) {
+                    var result = json.result;
+                    if (result.errNum == 0) {
+                        curAnoid = result.retData;                       
+                        AddToDiscuss(1);
+                    } else {
+                        MesTips(result.errMsg);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    MesTips("操作失败！");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+﻿AllotPeople.js    用户组管理--分配人员
+CourSortMan.js 课程分类管理
+Power.js 用户组管理
+SortCourse.js   分配课程
+RegularEval.js  定期评价（学年学期）
+
+

@@ -1,0 +1,234 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="description" content="">
+    <meta name="Keywords" content="">
+    <title>定期评价</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script src="js/linq.min.js"></script>
+    <script src="js/MobileCommon.js"></script>
+    <script src="js/ejs.min.js"></script>
+    <!--答题-->
+    <script type="text/template" id="item_table_view">
+        <div class="header" style="position:fixed;">
+            <a href="Index.html" class="back"><i class="iconfont">&#xe647;</i></a>
+            <span class="title"><%=retData.Eva_Table.Name%> 定期评价</span>
+        </div>
+        <div class="test_time">
+            <span style="width: 58%; color: #fff; text-overflow: ellipsis; display: block; float: left; overflow: hidden; white-space: nowrap;"><%=teacher_name%>-<%=course_Name%></span>实时总分：<b id="sp_realtotal" style="color:white;">0</b>分
+        </div>
+        <div class="ti">
+            <% $.each(retData.eva_detail_list,function(index,item){ %>
+            <div id="div_indi_<%=item.indicator_type_tid%>" class="test_area indicatype">
+                <% if(item.QuesType_Id!=3){ %>
+                        <h1 class="test_type">
+                            <%=Arabia_To_SimplifiedChinese(++index)%>、<%=item.indicator_type_tname%> <b>(<span id="h_<%=item.indicator_type_tid%>"></span> 分)</b>
+                        </h1>
+                        <% $.each(item.indicator_list,function(tindex,titem){ %>
+                        <div id="div_ques_<%=titem.Id%>" class="test_detail">
+                            <h1 class="test_type" style="border-bottom:none;">
+                                <b class="order_num"><%=(++tindex)%>.</b><b><%=titem.Name%></b>
+                                <b>(<span id="sp_<%=titem.Id%>"></span>分)</b>
+                            </h1>
+                            <ul id="ul_ques_<%=titem.Id%>" class="radios maxques">
+                                <% if(titem.OptionA!=""){ %>
+                                <li lioption="OptionA">
+                                    <span>
+                                        A<input type="radio" name="name_<%=titem.Id%>" value="" />
+                                    </span>
+                                    <div><%=titem.OptionA%>(<b class="numbers"><%=titem.OptionA_S%></b>分)</div>
+                                </li>
+                                <% } %>
+                                <% if(titem.OptionB!=""){ %>
+                                <li lioption="OptionB">
+                                    <span>
+                                        B<input type="radio" name="name_<%=titem.Id%>" value="" />
+                                    </span>
+                                    <div><%=titem.OptionB%>(<b class="numbers"><%=titem.OptionB_S%></b>分)</div>
+                                </li>
+                                <% } %>
+                                <% if(titem.OptionC!=""){ %>
+                                <li lioption="OptionC">
+                                    <span>
+                                        C<input type="radio" name="name_<%=titem.Id%>" value="" />
+                                    </span>
+                                    <div><%=titem.OptionC%>(<b class="numbers"><%=titem.OptionC_S%></b>分)</div>
+                                </li>
+                                <% } %>
+                                <% if(titem.OptionD!=""){ %>
+                                <li lioption="OptionD">
+                                    <span>
+                                        D<input type="radio" name="name_<%=titem.Id%>" value="" />
+                                    </span>
+                                    <div><%=titem.OptionD%>(<b class="numbers"><%=titem.OptionD_S%></b>分)</div>
+                                </li>
+                                <% } %>
+                                <% if(titem.OptionE!=""){ %>
+                                <li lioption="OptionE">
+                                    <span>
+                                        E<input type="radio" name="name_<%=titem.Id%>" value="" />
+                                    </span>
+                                    <div><%=titem.OptionE%>(<b class="numbers"><%=titem.OptionE_S%></b>分)</div>
+                                </li>
+                                <% } %>
+                                <% if(titem.OptionF!=""){ %>
+                                <li lioption="OptionF">
+                                    <span>
+                                        F<input type="radio" name="name_<%=titem.Id%>" value="" />
+                                    </span>
+                                    <div><%=titem.OptionF%>(<b class="numbers"><%=titem.OptionF_S%></b>分)</div>
+                                </li>
+                                <% } %>
+                            </ul>
+                        </div>
+                        <% }) %>
+                <% }else{ %>
+                        <h1 class="test_type">
+                            <%=Arabia_To_SimplifiedChinese(++index)%>、<%=item.indicator_type_tname%>
+                        </h1>
+                        <% $.each(item.indicator_list,function(tindex,titem){ %>
+                        <div id="div_ques_<%=titem.Id%>" class="test_detail">
+                            <h1 class="test_type" style="border-bottom:none;">
+                                <b class="order_num"><%=(++tindex)%>.</b><b><%=titem.Name%></b>
+                            </h1>
+                            <textarea name="" id="" class="textarea" placeholder="请输入内容"></textarea>
+                        </div>
+                <% }) %>
+                <%} %>
+            </div>
+            <% }) %>
+        </div>
+    </script>
+</head>
+<body>
+    <div id="main"></div>
+    <div class="submitwrap">
+        <input type="submit" id="btn_submit" class="button" value="提交" style="display:none;" />
+    </div>
+    <script type="text/javascript">
+
+
+        CheckHasExpertRegu(1);
+
+        mui.init({
+            swipeBack: true,//启用右滑关闭功能
+            keyEventBind: {
+                backbutton: true  //启动back按键监听
+            },
+            statusBarBackground: '#6a264b',
+        });
+        var UrlDate = new GetUrlDate();
+        var table_Id = getQueryString("Table_Id");//表格ID
+        var StudentUID = GetLoginUser().UniqueNo;//学生ID
+        var CourseId = getQueryString("Course_Id");//课程ID
+        var TeacherUID = getQueryString("Teacher_Id");//教师ID
+        var SectionId = getQueryString("section");//学期ID
+        var Eva_Distribution_Id = getQueryString("Id");
+        var CreateUID = GetLoginUser().UniqueNo;//学生ID
+        var course_Name = getQueryString("course_Name");
+        var teacher_name = getQueryString("Teacher_Name");
+        $(function () {
+            $('#btn_submit').on('tap', function () {
+                SaveEvlData();
+            });
+            initdata();
+        });
+        //初始化表格列表
+        function initdata() {
+            $("#btn_submit").show();
+            $("#main").empty();
+            $.ajax({
+                url: HanderServiceUrl + "/Eva_Manage/Eva_ManageHandler.ashx",
+                type: "post",
+                async: false,
+                dataType: "json",
+                data: { Func: "Get_Eva_TableDetail", table_Id: table_Id, no_eduType: true },
+                success: function (json) {
+                    if (json.result.errNum == 0) {
+                        var retData = json.result.retData;
+                        retData.eva_detail_list = TaskInfoOrder(retData);
+                        $("#main").append(ejs.render($('#item_table_view').html(), { retData: retData }));
+                        GetScore();
+                        InitControl();
+                    }
+                },
+                error: function () {
+                    //接口错误时需要执行的
+                }
+            });
+        }
+        function SaveEvlData() {
+           
+         
+            var realscore = $("#sp_realtotal").html() || 0;
+            var obj = new Object();
+            obj.func = "Add_Eva_QuestionAnswer";
+            obj.Eva_Distribution_Id = Eva_Distribution_Id;
+            obj.StudentUID = StudentUID;
+            obj.CourseId = CourseId;
+            obj.TeacherUID = TeacherUID;
+            obj.SectionId = SectionId;
+            obj.Score = realscore;
+            obj.CreateUID = CreateUID;
+            obj.Regu_Id = Regu_Id;
+            var array = [];
+            var flg = 0;
+            $(".test_detail").each(function () {
+                var li_ques = $(this).find("li.on");
+                if ($(this).find("li").length != 0 && li_ques.length == 0) {
+                    flg++;
+                    MesTips('请答题完整！');
+                    return false;
+                }
+                var area_q = $(this).find("textarea");
+                if (area_q.length != 0 && area_q.val().trim() == "") {
+                    flg++;
+                    MesTips('请答题完整！');
+                    return false;
+                }
+                var sub_array = new Object();
+                var TableDetail_Id = $(this).attr("id").replace("div_ques_", "");
+                var sub_Score = $(this).find("li.on").find('b.numbers').html() || "";
+                var Answer = "";
+                if (area_q.length != 0) Answer = area_q.val().trim().replace(/(^\s*)|(\s*$)/g, "");
+                if (li_ques.length != 0) Answer = li_ques.attr("lioption");
+                sub_array.TableDetail_Id = TableDetail_Id;
+                sub_array.Score = sub_Score;
+                sub_array.Answer = Answer;
+                array.push(sub_array);
+            });
+            obj.List = JSON.stringify(array);
+            if (flg == 0) {
+                $.ajax({
+                    url: HanderServiceUrl + "/Eva_Manage/Eva_ManageHandler.ashx",
+                    type: "post",
+                    async: false,
+                    dataType: "json",
+                    data: obj,
+                    success: function (json) {
+                        if (json.result.errMsg == "success") {
+                            MesTips('提交成功');
+                            window.location.href = "Index.html";
+                        }
+                    },
+                    error: function () {
+                        //接口错误时需要执行的
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

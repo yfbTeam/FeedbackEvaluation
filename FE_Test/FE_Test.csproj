@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{244F9505-9965-4DAB-BAE6-F4C1627C0E91}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FE_Test</RootNamespace>
+    <AssemblyName>FE_Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FEBLL\FEBLL.csproj">
+      <Project>{b4b5e8c9-9065-4988-a41f-a59b49b1181e}</Project>
+      <Name>FEBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEDAL\FEDAL.csproj">
+      <Project>{e0a6d2dc-a46f-448d-adef-03e78eb1bb8b}</Project>
+      <Name>FEDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEHandler\FEHandler.csproj">
+      <Project>{1b407016-c210-454e-b007-b41f8623bb3f}</Project>
+      <Name>FEHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEIBLL\FEIBLL.csproj">
+      <Project>{7192d2c2-e267-48e4-9757-592be0237d73}</Project>
+      <Name>FEIBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEIDAL\FEIDAL.csproj">
+      <Project>{4c2e88ec-04ef-49c3-8ce4-283c7a10b11b}</Project>
+      <Name>FEIDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEModel\FEModel.csproj">
+      <Project>{ffb01332-5a50-4cce-8370-638e4676f2c1}</Project>
+      <Name>FEModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEUtility\FEUtility.csproj">
+      <Project>{4aaa209d-899a-4637-b90b-dafb00afd0e3}</Project>
+      <Name>FEUtility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TextFile1.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

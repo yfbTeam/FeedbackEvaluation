@@ -1,0 +1,4 @@
+﻿运行时错误出现时间：2017/9/11 10:18:10
+错误原因：对象名 'TPM_AcheiveRewardInfoDetail' 无效。
+
+

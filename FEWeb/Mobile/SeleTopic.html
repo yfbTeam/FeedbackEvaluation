@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="description" content="">
+    <meta name="Keywords" content="">
+    <title>匿名聊天详情</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script src="js/linq.min.js"></script>
+    <script src="js/MobileCommon.js"></script>
+    <script src="js/ejs.min.js"></script>
+    <!--联系人-->
+    <script type="text/template" id="item_Tpoic">
+        <% $.each(retData,function(index,item){ %>
+        <li class='<%=item.ReadCount>0?"active":""%>'>
+            <a href="AnonymousChat_Detail_Stu.html?recuid=<%=curReceiveUId%>&cf=2&anonid=<%=item.ano.Id%>&rname=<%=curReceiveName%>">
+                <div class="img">
+                    <img src="images/niming.png" /><b></b>
+                </div>
+                <div class="desc">
+                    <h2>
+                        <span class="people"><%=item.ano.Content%></span>
+                        <span class="time"><%=DateTimeConvert(item.ano.CreateTime)%></span>
+                    </h2>
+                    <p>
+                        <span class="fl"><%=decodeURIComponent(curReceiveName)%></span>
+                        <span class="fr"><% if(item.ano.Type==0){ %>定期评价<% }else{ %>自定义话题<%} %></span>
+                    </p>
+                </div>
+            </a>
+        </li>
+        <% }) %>
+    </script>
+</head>
+<body>
+    <input type="hidden" id="Hid_LoginUID" />
+    <header class="header">
+        <a href="AnonymousChat_Stu.html" class="back">
+            <i class="iconfont">&#xe647;</i>
+        </a>
+        <span class="title">匿名聊天详情</span>
+        <a href="javascript:;" id="a_AddTpoic" class="add">
+            <i class="iconfont">&#xe607;</i>
+        </a>
+    </header>
+    <div class="content">
+                <ul id="ul_Topic" class="link_lists" style="padding-top:0;"></ul>
+     </div>
+            <footer class="footer">
+                <a href="Index.html">
+                    <i class="iconfont">&#xe629;</i>
+                    <b></b>
+                    <p>首页</p>
+                </a>
+                <a href="Feedback.html" class="active">
+                    <i class="iconfont">&#xe6ce;</i>
+                    <b></b>
+                    <p>互动反馈</p>
+                </a>
+                <a href="My.html">
+                    <i class="iconfont">&#xe692;</i>
+                    <b></b>
+                    <p>我的</p>
+                </a>
+            </footer>
+            <script type="text/javascript">
+                mui.init({
+                    swipeBack: true,//启用右滑关闭功能
+                    keyEventBind: {
+                        backbutton: true  //启动back按键监听
+                    },
+                    statusBarBackground: '#6a264b',
+                });
+                var UrlDate = new GetUrlDate();
+                var curReceiveUId = UrlDate.recuid;
+                var curReceiveName = UrlDate.rname;
+                $(function () {
+                    $("#Hid_LoginUID").val(login_User.UniqueNo);
+                    $("#a_AddTpoic").attr("href", "AnonymousChat_Detail_Stu.html?anonid=0&cf=2&recuid=" + curReceiveUId + "&rname=" + curReceiveName);
+                    initdata();
+                });
+
+                //加载话题列表
+                function initdata() {
+                    $("#ul_Topic").html("");
+                    $.ajax({
+                        url: HanderServiceUrl + "/InteractFeed/Feed_DiscussHandler.ashx",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            Func: "GetFeed_AnonymityDiscussData",
+                            CreateUID: $("#Hid_LoginUID").val(),
+                            ReceiveUID: curReceiveUId,
+                            IsList: 1
+                        },
+                        success: function (json) {
+                            if (json.result.errNum.toString() == "0") {
+                                rtndata = json.result.retData;
+                                if(rtndata.length==0){
+                                    nomessage('ul_Topic');
+                                    return;
+                                }
+                                $("#ul_Topic").append(ejs.render($("#item_Tpoic").html(), { retData: rtndata }));
+
+                            }
+                            else {
+                                nomessage('ul_Topic');
+                            }
+                        },
+                        error: function (errMsg) {
+                            nomessage('ul_Topic');
+                        }
+                    });
+                }
+
+            </script>
+</body>
+</html>

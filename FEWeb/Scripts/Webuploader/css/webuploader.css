@@ -1,0 +1,50 @@
+.webuploader-container {
+	position: relative;
+}
+.webuploader-element-invisible {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px,1px,1px,1px);
+}
+.webuploader-pick {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	background: #6a264b;
+	padding: 10px 15px;
+	color: #fff;
+	text-align: center;
+	border-radius: 3px;
+	overflow: hidden;
+}
+.input_lable2{
+    position:relative
+}
+.input_lable2>label{
+    position:absolute;left:0px;top:0px;
+}
+.webuploader-pick-disable {
+	opacity: 0.6;
+	pointer-events:none;
+}
+.uploader_container{
+    width:100%;padding-left:155px;box-sizing:border-box;
+}
+.filelist li{
+    float:left; overflow:hidden;line-height:35px;margin-right:20px;
+}
+.filelist li .title1{
+    float:left;
+}
+.filelist li .file-panel{
+    float:left;margin-left:20px;
+}
+.preview{
+    color:#6a254a
+}
+.filelist li .cancel{
+    color:red;
+}
+.filelist li .file-panel>*{
+    margin:0px 5px;cursor:pointer;
+}

@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="description" content="">
+    <meta name="Keywords" content="">
+    <title>注册</title>
+    <link href="css/mui.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script src="js/MobileCommon.js"></script>
+</head>
+<body class="login_bg">
+    <img src="images/logo.png" alt="Alternate Text" id="logo" />
+    <form id="loginform" name="loginform">
+        <ul id="sortable1" class="con">
+            <li class="xian">
+                <span class="icon">
+                    <img src="images/1.png" alt="Alternate Text" />
+                </span>
+                <input id="txt_loginName" type="text" class="kuang fr" placeholder="姓名" />
+            </li>
+            <li class="xian">
+                <span class="icon">
+                    <img src="images/4.png" alt="Alternate Text" />
+                </span>
+                <input id="txt_phone" type="number" class="kuang fr" placeholder="手机号" />
+            </li>
+            <li class="xian">
+                <span class="icon">
+                    <img src="images/5.png" alt="Alternate Text" />
+                </span>
+                <input id="txt_email" type="text" class="kuang fr" placeholder="邮箱" />
+            </li>
+            <li class="xian">
+                <span class="icon">
+                    <img src="images/2.png" alt="Alternate Text" />
+                </span>
+                <input id="txt_passWord" type="password" class="kuang fr" placeholder="请输入密码" />
+            </li>
+        </ul>
+        <a href="Login.html" class="register">返回登录</a>
+        <input type="button" id="BtnRegister" name="BtnLogin" class="btn_btn" value="注册" />
+    </form>
+    <!--<p class="zi">版权所有 Copyright 2017 © 中国劳动关系学院</p>-->
+    <script>
+        mui.init({
+            swipeBack: true,//启用右滑关闭功能
+            keyEventBind: {
+                backbutton: true  //启动back按键监听
+            },
+            statusBarBackground: '#38bd6f',
+        });
+        var UrlDate = new GetUrlDate();
+        $(function () {
+
+            $('#BtnRegister').on('tap', function () {
+                Register();
+            })
+        })
+        var regBox = {
+            regEmail: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,//邮箱
+            regMobile: /^0?1[3|4|5|8|7][0-9]\d{8}$/ //手机
+        }
+        function Register() {
+            var Name = $('#txt_loginName').val().trim();
+            var Phone = Number($('#txt_phone').val().trim());
+            var Email = $('#txt_email').val().trim();
+            var PassWord = $('#txt_passWord').val().trim();
+            if (!regBox.regMobile.test(Phone)) {
+                MesTips("请输入正确的手机号");
+                return;
+            }
+            if (!regBox.regEmail.test(Email)) {
+                MesTips("请输入正确的邮箱地址");
+                return;
+            }
+            var postData = { func: "InsertUserInfo", Name: Name, UserType: 1, PassWord: PassWord, Phone: Phone, Email: Email };
+            $.ajax({
+                url: HanderServiceUrl + "/SetMenu/SetPassWordHandler.ashx",
+                data: postData,
+                dataType: 'json',
+                success: function (json) {
+                    
+                    if (json.result.errMsg = "success") {
+                        var data = {
+                            LoginName: Name,
+                            Phone: Phone,
+                            Email: Email,
+                            PassWord: PassWord,
+                            Sys_Role: "学生"
+                        }
+                        if (Name != '' || Phone != '' || Email != '' || PassWord != '') {
+                            localStorage.setItem('Userinfo_LG', JSON.stringify(data));
+                            window.location.href = 'Index.html';
+                        }
+
+                    }
+                },
+                error: function (errMsg) {
+                    MesTips("注册失败！");
+                }
+            })
+        }
+    </script>
+</body>
+</html>

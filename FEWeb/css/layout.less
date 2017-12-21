@@ -1,0 +1,29 @@
+﻿body{background: #f9f4f8;}
+.w(@w:0px){
+  width:@w;
+}
+.h(@h:0px){
+  height:@h;
+}
+.radius(@r:0px){
+  border-radius:@r;
+}
+.border(@width:1px,@style:solid,@color:#ccc){
+  border:@width @style @color;
+}
+.clearfix:after{content:"";display:block;height:0;clear:both;visibility:hidden;}
+.float(@diretion:left){
+  float:@diretion;
+}
+.margin(@top:0px,@right:0px,@bottom:0px,@left:0px){
+  margin:@top @right @bottom @left;
+}
+.padding(@top:0px,@right:0px,@bottom:0px,@left:0px){
+  padding:@top @right @bottom @left;
+}
+.line-height(@height:100%){
+  line-height: @height;
+}
+.align(@diretion:left){
+  text-align:@diretion;
+}
