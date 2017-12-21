@@ -55,7 +55,13 @@
         var Id = getQueryString('Id'), Iid = getQueryString('Iid');
         var twoNav = getNav(Id);
         $(twoNav).each(function (i, item) {
-            $("#ul_twonav").append('<li id="li_twonav_' + item.ID + '" class="' + (item.Url == cururl ? "selected" : "") + '"><a href="' + item.Url + '?Id=' + item.Pid + '&Iid=' + item.ID + '"><div><i class="iconfont">' + item.IconClass + '</i><span>' + item.Name + '</span></div></a></li>')
+			item['child'] = getNav(n.ID);
+            if (item['child'].length > 0) {
+                $("#ul_twonav").append('<li id="li_twonav_' + item.ID + '" class="' + (item.child[0].Url == cururl ? "selected" : "") + '"><a href="' + item.child[0].Url + '?Id=' + item.Pid + '&Iid=' + item.ID + '"><div><i class="iconfont">' + item.IconClass + '</i><span>' + item.Name + '</span></div></a></li>')
+            } else {
+                $("#ul_twonav").append('<li id="li_twonav_' + item.ID + '" class="' + (item.Url == cururl ? "selected" : "") + '"><a href="' + item.Url + '?Id=' + item.Pid + '&Iid=' + item.ID + '"><div><i class="iconfont">' + item.IconClass + '</i><span>' + item.Name + '</span></div></a></li>')
+            }
+            
         })
         $("#li_top_" + Id).addClass('selected').siblings().removeClass('selected');
         if (Iid != 'null') {

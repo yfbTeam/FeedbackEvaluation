@@ -72,19 +72,11 @@ function get3rdNavBy1st(fristnavId) {
 }
 function BindThreeNav() {
     $('#threenav').html('');
-    var threeNav = [];
     var Id = getQueryString('Id'), Iid = getQueryString('Iid');
-    if (Iid == null) {
-        threeNav = get3rdNavBy1st(Id)
-        $(threeNav).each(function (index1, elem) {
-            $('#threenav').append('<a href="' + elem.Url + '?Id=' + Id + '&Iid=' + elem.Pid + '" class="' + (elem.Url == cururl ? "selected" : "") + '">' + elem.Name + '</a>')
-        })
-    } else {
-        threeNav = getNav(Iid);
-        $(threeNav).each(function (i, item) {
-            $('#threenav').append('<a href="' + item.Url + '?Id=' + Id + '&Iid=' + Iid + '" class="' + (item.Url == cururl ? "selected" : "") + '">' + item.Name + '</a>')
-        })
-    }
+    var threeNav = getNav(Iid);
+	$(threeNav).each(function (i, item) {
+		$('#threenav').append('<a href="' + item.Url + '?Id=' + Id + '&Iid=' + Iid + '" class="' + (item.Url == cururl ? "selected" : "") + '">' + item.Name + '</a>')
+	})
 }
 //表格操作
 function tableSlide() {
